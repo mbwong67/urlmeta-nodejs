@@ -81,13 +81,13 @@ async function getPageMetadata(url) {
   const doc = domino.createWindow(html).document
 
   // Extract metadata.
-  const metadata = getMetadata(doc, url, metadataRules)
+  const metadata = getMetadata(doc, url.format(), metadataRules)
   const temp = doc.querySelector('meta[property="og:title"]')
   const hasOgTags = doc.querySelectorAll('meta[property="og:title"]').length !== 0
 
   var data = {
     "hasOgTags":    hasOgTags,
-    "url":          metadata.url.format(),
+    "url":          metadata.url,
     "title":        metadata.title,
     "description":  metadata.description,
     "image":        metadata.image,
