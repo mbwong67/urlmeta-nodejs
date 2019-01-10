@@ -1,5 +1,8 @@
+language: generic
+
 services:
   - docker
+
 script:
   - docker build urlmeta:latest app
   - docker run urlmeta:latest npm run test
