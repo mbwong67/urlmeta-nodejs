@@ -61,8 +61,8 @@ async function getYoutubeMetadata(targetUrl) {
   const metadata = await response.json()
 
   return metadataResult({
-    "title":        metadata.title,
     "url":          targetUrl.format(),
+    "title":        metadata.title,
     "image":        metadata.thumbnail_url,
     "type":         metadata.type,
     "siteName":     targetUrl.hostname,
@@ -82,17 +82,18 @@ async function getPageMetadata(url) {
 
   // Extract metadata.
   const metadata = getMetadata(doc, url, metadataRules)
+  const temp = doc.querySelector('meta[property="og:title"]')
   const hasOgTags = doc.querySelectorAll('meta[property="og:title"]').length !== 0
 
   var data = {
+    "hasOgTags":    hasOgTags,
+    "url":          metadata.url.format(),
     "title":        metadata.title,
     "description":  metadata.description,
-    "url":          metadata.url.format(),
     "image":        metadata.image,
     "type":         metadata.type,
     "locale":       metadata.language,
     "video":        metadata.video,
-    "hasOgTags":    hasOgTags,
     "siteName":     url.hostname,
     "altImages":    hasOgTags ? [] : getDocumentImages(doc, url),
   }
@@ -127,15 +128,26 @@ function getDocumentImages(doc, docUrl) {
 }
 
 function metadataResult(metadata) {
+  // express.js skips fields with 'undefined' values,
+  // if we have data = {'test': undefined} and we do res.json(data),
+  // the actual response will be {} (empty object).
+  // And domino returns undefined for absent elements, so we
+  // do the undefined -> null replacement here to preserve these keys
+  // in the request output.
+  for (var key in metadata) {
+    if (metadata[key] === undefined) {
+      metadata[key] = null;
+    }
+  }
   return Object.assign ({
+    "hasOgTags":    false,
+    "url":          "",
     "title":        "",
     "description":  "",
-    "url":          "",
     "image":        "",
     "type":         "",
     "locale":       "",
     "video":        "",
-    "hasOgTags":    false,
     "siteName":     "",
     "altImages":    [],
   }, metadata)
