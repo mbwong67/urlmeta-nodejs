@@ -36,14 +36,14 @@ metadataRules["video"] = {
 }
 
 async function getUrlMetadata(targetUrl) {
-    const url = urlParser.parse(targetUrl)
-    const host = url.hostname
+  const url = urlParser.parse(targetUrl)
+  const host = url.hostname
 
-    if (host.indexOf("youtube.com") !== -1 || host.indexOf("youtu.be") !== -1) {
-        return getYoutubeMetadata(url);
-    } else {
-        return getPageMetadata(url);
-    }
+  if (host.indexOf("youtube.com") !== -1 || host.indexOf("youtu.be") !== -1) {
+    return getYoutubeMetadata(url)
+  } else {
+    return getPageMetadata(url)
+  }
 }
 
 async function getYoutubeMetadata(targetUrl) {
@@ -54,7 +54,7 @@ async function getYoutubeMetadata(targetUrl) {
   }
   const metadataUrl = youtubeUrl.format()
 
-  const response = await fetch(metadataUrl);
+  const response = await fetch(metadataUrl)
   if (!response.ok) {
     throw new Error("Can not fetch youtube data: " + response.statusText)
   }
@@ -66,7 +66,7 @@ async function getYoutubeMetadata(targetUrl) {
     "image":        metadata.thumbnail_url,
     "type":         metadata.type,
     "siteName":     targetUrl.hostname,
-  });
+  })
 }
 
 async function getPageMetadata(url) {
@@ -98,8 +98,7 @@ async function getPageMetadata(url) {
   }
   // TODO: looks like "undefined" values are excluded from output
   // along with the keys, why?
-  console.log(data);
-  return metadataResult(data);
+  return metadataResult(data)
 }
 
 function imageThatShouldBeExcluded(imageSource) {
@@ -110,7 +109,7 @@ function getDocumentImages(doc, docUrl) {
   const images = doc.querySelectorAll("img")
   const count = Math.min(images.length, MAX_ALT_IMAGES)
 
-  var result = [];
+  var result = []
   for (var i = 0; i < count; i++) {
     imageSource = images[i].src
     if(!imageSource || imageThatShouldBeExcluded(imageSource)) {
@@ -139,7 +138,7 @@ function metadataResult(metadata) {
     "hasOgTags":    false,
     "siteName":     "",
     "altImages":    [],
-  }, metadata);
+  }, metadata)
 }
 
 module.exports = getUrlMetadata
