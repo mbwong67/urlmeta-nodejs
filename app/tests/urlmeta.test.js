@@ -1,8 +1,8 @@
 const getUrlMetadata = require('../urlmeta');
 
-test('google.com returns expected data', async () => {
-  const result = await getUrlMetadata('https://google.com')
-  expect(result).toEqual(samples['google'])
+test('wikipedia.org returns expected data', async () => {
+  const result = await getUrlMetadata('https://wikipedia.org')
+  expect(result).toEqual(samples['wikipedia'])
 });
 
 test('nytimes.com returns expected data', async () => {
@@ -61,22 +61,21 @@ test('Non-existing youtube url results in an error', async () => {
 
 
 const samples = {
-  'google': {
+  "wikipedia": {
     "hasOgTags":false,
-    "url":"https://google.com/",
-    "title":"Google",
-    "description":null,
+    "url":"https://wikipedia.org/",
+    "title":"Wikipedia",
+    "description":"Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation.",
     "image":null,
     "type":null,
-    "locale":"uk",
+    "locale":"mul",
     "video":null,
-    "siteName":"google.com",
-    "altImages":[
-        "https://google.com/images/branding/googlelogo/1x/googlelogo_white_background_color_272x92dp.png",
-        "https://google.com/textinputassistant/tia.png"
+    "siteName":"wikipedia.org",
+    "altImages": [
+      "https://wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png"
     ]
   },
-  'youtube': {
+  "youtube": {
     "hasOgTags":false,
     "url":"https://www.youtube.com/watch?v=0J66ybQM0lo",
     "title":"Federer Training",
@@ -88,7 +87,7 @@ const samples = {
     "siteName":"www.youtube.com",
     "altImages":[]
   },
-  'nytimes': {
+  "nytimes": {
     "hasOgTags":true,
     "url":"https://www.nytimes.com/2018/10/01/opinion/justice-kavanaugh-recuse-himself.html",
     "title":"Opinion | All the Ways a Justice Kavanaugh Would Have to Recuse Himself",
