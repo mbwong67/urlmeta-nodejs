@@ -121,7 +121,7 @@ function getDocumentImages(doc, docUrl) {
     if (!imageUrl.host) {
       result.push(docUrl.resolve(imageUrl))
     } else {
-      result.push(docUrl.format())
+      result.push(imageUrl.format())
     }
   }
   return result
