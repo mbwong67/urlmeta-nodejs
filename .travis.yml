@@ -4,5 +4,5 @@ services:
   - docker
 
 script:
-  - docker build urlmeta:latest app
+  - docker build -t urlmeta:latest app
   - docker run urlmeta:latest npm run test
