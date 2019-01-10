@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+    urlmeta:
+        build:
+            context: app
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+            # 9229 is a node inspector port
+            # open chrome://inspect/ in Chrome to debug the server code.
+            - "9229:9229"
+        # command: node server.js
+        command: node --inspect=0.0.0.0:9229 app.js
+        volumes:
+            - ./app:/src
+            - /src/node_modules/
