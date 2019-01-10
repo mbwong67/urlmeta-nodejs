@@ -116,8 +116,13 @@ function getDocumentImages(doc, docUrl) {
     if(!imageSource || imageThatShouldBeExcluded(imageSource)) {
       continue
     }
-    // TODO: test with "bad" image links.
-    var imageUrl = urlParser.parse(imageSource)
+    var imageUrl = null
+    try {
+      imageUrl = urlParser.parse(imageSource)
+    } catch (e) {
+      // Skip bad image link
+      continue
+    }
     if (!imageUrl.host) {
       result.push(docUrl.resolve(imageUrl))
     } else {
