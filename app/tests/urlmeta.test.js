@@ -1,19 +1,42 @@
+const nock = require('nock')
 const getUrlMetadata = require('../urlmeta');
 
 test('wikipedia.org returns expected data', async () => {
+  // Mock the network request.
+  const scope = nock('https://wikipedia.org')
+   .get('/')
+   .replyWithFile(200, __dirname + '/samples/wikipedia.html')
+
+  // Get the metadata.
   const result = await getUrlMetadata('https://wikipedia.org')
   expect(result).toEqual(samples['wikipedia'])
 });
 
 test('nytimes.com returns expected data', async () => {
-  const result = await getUrlMetadata('https://www.nytimes.com/2018/10/01/opinion/justice-kavanaugh-recuse-himself.html')
+  const url = '/2018/10/01/opinion/justice-kavanaugh-recuse-himself.html'
+
+  // Mock the network request.
+  const scope = nock('https://www.nytimes.com')
+   .get(url)
+   .replyWithFile(200, __dirname + '/samples/nytimes.html')
+
+  // Get the metadata.
+  const result = await getUrlMetadata('https://www.nytimes.com' + url)
   expect(result).toEqual(samples['nytimes'])
 });
 
 test('Non-existing nytimes url results in an error', async () => {
+  const url = '/2018/10/01/opinionauauauno/'
+
+  // Mock the network request.
+  const scope = nock('https://www.nytimes.com')
+   .get(url)
+   .replyWithFile(404, __dirname + '/samples/nytimes_404.html')
+
   expect.assertions(1);
   try {
-    const result = await getUrlMetadata('https://www.nytimes.com/2018/10/01/opinionauauauno/')
+    // Get the metadata, verify that we get an error.
+    const result = await getUrlMetadata('https://www.nytimes.com' + url)
   } catch (e) {
     expect(e).toEqual(new Error(
       'Can not fetch page: Not Found'
@@ -24,6 +47,7 @@ test('Non-existing nytimes url results in an error', async () => {
 test('Malformed nytimes url results in an error', async () => {
   expect.assertions(1);
   try {
+    // Get the metadata, verify that we get an error.
     const result = await getUrlMetadata('httpsQQ://www.nytimes.com/2018/10/01/opinionauauauno/')
   } catch (e) {
     expect(e).toEqual(new TypeError(
@@ -33,13 +57,26 @@ test('Malformed nytimes url results in an error', async () => {
 });
 
 test('YouTube link returns expected data', async () => {
+  // Mock the network request.
+  const scope = nock('https://www.youtube.com')
+   // We request the metadata from the /oembed endpoint
+   .get('/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D0J66ybQM0lo&format=json')
+   .replyWithFile(200, __dirname + '/samples/youtube.json')
+
+  // Get the metadata.
   const result = await getUrlMetadata('https://www.youtube.com/watch?v=0J66ybQM0lo')
   expect(result).toEqual(samples['youtube'])
 });
 
 test('Malformed youtube url results in an error', async () => {
+  // Mock the network request.
+  const scope = nock('https://www.youtube.com')
+   .get('/oembed?url=httpsqq%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D3viZhIumUNo&format=json')
+   .reply(404, 'Not found')
+
   expect.assertions(1);
   try {
+    // Get the metadata, verify that we get an error.
     const result = await getUrlMetadata('httpsQQ://www.youtube.com/watch?v=3viZhIumUNo')
   } catch (e) {
     expect(e).toEqual(new Error(
@@ -49,6 +86,11 @@ test('Malformed youtube url results in an error', async () => {
 });
 
 test('Non-existing youtube url results in an error', async () => {
+  // Mock the network request.
+  const scope = nock('https://www.youtube.com')
+   .get('/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D3viZhIumUNo_noexist1321&format=json')
+   .reply(404, 'Not found')
+
   expect.assertions(1);
   try {
     const result = await getUrlMetadata('https://www.youtube.com/watch?v=3viZhIumUNo_noexist1321')

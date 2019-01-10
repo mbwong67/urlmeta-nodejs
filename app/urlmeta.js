@@ -47,6 +47,10 @@ async function getUrlMetadata(targetUrl) {
 }
 
 async function getYoutubeMetadata(targetUrl) {
+  // To verify that targetUrl is well-formed.
+  const parsedUrl = urlParser.parse(targetUrl)
+
+  // Build the url to the /oembed endpoint.
   var youtubeUrl = urlParser.parse("https://www.youtube.com/oembed")
   youtubeUrl.query = {
     "url": targetUrl.format(),
