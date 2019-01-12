@@ -1,4 +1,5 @@
 const domino = require('domino')
+const cheerio = require('cheerio')
 const fetch = require('node-fetch')
 /*
  * Metadata parser, https://github.com/mozilla/page-metadata-parser
@@ -26,13 +27,57 @@ const urlParser = require('url')
 const MAX_ALT_IMAGES = 30
 
 // We extend standard metadata with og:video tag.
-var metadataRules = metadataRuleSets
-metadataRules["video"] = {
-  rules: [
-    ['meta[property="og:video:secure_url"]', element => element.getAttribute('content')],
-    ['meta[property="og:video:url"]', element => element.getAttribute('content')],
-    ['meta[property="og:video"]', element => element.getAttribute('content')],
-  ]
+// var metadataRules = metadataRuleSets
+// metadataRules["video"] = {
+//   rules: [
+//     ['meta[property="og:video:secure_url"]', element => element.getAttribute('content')],
+//     ['meta[property="og:video:url"]', element => element.getAttribute('content')],
+//     ['meta[property="og:video"]', element => element.getAttribute('content')],
+//   ]
+// }
+
+var metadataRules = {
+  description: {
+    rules: [
+      ['meta[property="og:description"]', e => e.getAttribute('content')],
+      ['meta[name="description"]', e => e.getAttribute('content')]
+    ]
+  },
+  title: {
+    rules: [
+      ['meta[property="og:title"]', e => e.getAttribute('content')],
+      ['title', e => e.text]
+    ]
+  },
+  locale: {
+    rules: [
+      ['meta[property="og:locale"]', e => e.getAttribute('content')],
+    ]
+  },
+  type: {
+    rules: [
+      ['meta[property="og:type"]', e => e.getAttribute('content')],
+    ]
+  },
+  url: {
+    rules: [
+      ['meta[property="og:url"]', e => e.getAttribute('content')],
+    ]
+  },
+  image: {
+    rules: [
+      // ['meta[property="og:image:secure_url"]', element => element.getAttribute('content')],
+      // ['meta[property="og:image:url"]', element => element.getAttribute('content')],
+      ['meta[property="og:image"]', element => element.getAttribute('content')],
+    ]
+  },
+  video: {
+    rules: [
+      // ['meta[property="og:video:secure_url"]', element => element.getAttribute('content')],
+      // ['meta[property="og:video:url"]', element => element.getAttribute('content')],
+      ['meta[property="og:video"]', element => element.getAttribute('content')],
+    ]
+  }
 }
 
 async function getUrlMetadata(targetUrl) {
@@ -101,8 +146,6 @@ async function getPageMetadata(url) {
     "siteName":     url.hostname,
     "altImages":    hasOgTags ? [] : getDocumentImages(doc, url),
   }
-  // TODO: looks like "undefined" values are excluded from output
-  // along with the keys, why?
   return metadataResult(data)
 }
 
@@ -150,14 +193,14 @@ function metadataResult(metadata) {
   }
   return Object.assign ({
     "hasOgTags":    false,
-    "url":          "",
-    "title":        "",
-    "description":  "",
-    "image":        "",
-    "type":         "",
-    "locale":       "",
-    "video":        "",
-    "siteName":     "",
+    "url":          null,
+    "title":        null,
+    "description":  null,
+    "image":        null,
+    "type":         null,
+    "locale":       null,
+    "video":        null,
+    "siteName":     null,
     "altImages":    [],
   }, metadata)
 }

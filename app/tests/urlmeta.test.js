@@ -110,7 +110,7 @@ const samples = {
     "description":"Wikipedia is a free online encyclopedia, created and edited by volunteers around the world and hosted by the Wikimedia Foundation.",
     "image":null,
     "type":null,
-    "locale":"mul",
+    "locale":null,
     "video":null,
     "siteName":"wikipedia.org",
     "altImages": [
@@ -121,11 +121,11 @@ const samples = {
     "hasOgTags":false,
     "url":"https://www.youtube.com/watch?v=0J66ybQM0lo",
     "title":"Federer Training",
-    "description":"",
+    "description":null,
     "image":"https://i.ytimg.com/vi/0J66ybQM0lo/hqdefault.jpg",
     "type":"video",
-    "locale":"",
-    "video":"",
+    "locale":null,
+    "video":null,
     "siteName":"www.youtube.com",
     "altImages":[]
   },
@@ -136,7 +136,7 @@ const samples = {
     "description":"Given his blatant partisanship and personal animosity toward liberals, how could he be an effective member of the Supreme Court?",
     "image":"https://static01.nyt.com/images/2018/10/01/opinion/01Tribe/01Tribe-facebookJumbo.jpg",
     "type":"article",
-    "locale":"en",
+    "locale":null,
     "video":null,
     "siteName":"www.nytimes.com",
     "altImages":[]
