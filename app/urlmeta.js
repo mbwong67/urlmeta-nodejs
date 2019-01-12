@@ -131,12 +131,11 @@ async function getPageMetadata(url) {
 
   // Extract metadata.
   const metadata = getMetadata(doc, url.format(), metadataRules)
-  const temp = doc.querySelector('meta[property="og:title"]')
   const hasOgTags = doc.querySelectorAll('meta[property="og:title"]').length !== 0
 
   var data = {
     "hasOgTags":    hasOgTags,
-    "url":          metadata.url,
+    "url":          metadata.url ? metadata.url : url.format(),
     "title":        metadata.title,
     "description":  metadata.description,
     "image":        metadata.image,
