@@ -2,8 +2,18 @@
   "dependencies": {
     "domino": "^2.1.1",
     "express": "^4.16.4",
+    "got": "^9.5.0",
+    "metaget": "^1.0.6",
+    "metascraper": "^4.9.0",
+    "metascraper-author": "^4.9.0",
+    "metascraper-description": "^4.9.0",
+    "metascraper-image": "^4.9.0",
+    "metascraper-logo": "^4.9.0",
+    "metascraper-title": "^4.9.0",
+    "metascraper-url": "^4.9.0",
     "node-fetch": "^2.3.0",
-    "page-metadata-parser": "^1.1.3"
+    "page-metadata-parser": "^1.1.3",
+    "url-inspector": "^2.3.3"
   },
   "devDependencies": {
     "jest": "^23.6.0",

@@ -1,5 +1,4 @@
 const domino = require('domino')
-const cheerio = require('cheerio')
 const fetch = require('node-fetch')
 /*
  * Metadata parser, https://github.com/mozilla/page-metadata-parser

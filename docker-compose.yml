@@ -10,7 +10,9 @@ services:
             # 9229 is a node inspector port
             # open chrome://inspect/ in Chrome to debug the server code.
             - "9229:9229"
-        command: node --inspect=0.0.0.0:9229 app.js
+        # command: node --inspect=0.0.0.0:9229 app.js
+        command: node app.js
+        # command: pm2 start --no-daemon app.js -i 4
         volumes:
             - ./app:/src
             - /src/node_modules/
